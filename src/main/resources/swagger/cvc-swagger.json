@@ -1,0 +1,4590 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "A service to provide different type of covered-card-service operations.",
+    "version": "1.0",
+    "title": "covered-card-service",
+    "termsOfService": "ADIB Service T&C URL",
+    "contact": {
+      "name": "covered-card-service-team"
+    },
+    "license": {
+      "name": "ADIB covered-card-service License"
+    }
+  },
+  "host": "localhost:8086",
+  "basePath": "/cards/coveredCard",
+  "tags": [{
+    "name": "ApplicationAuditController",
+    "description": "Maintains APIs to support the audibility of an application, eg. capturing certain lifecycle events."
+  },
+    {
+      "name": "ApplicationLifecycleController",
+      "description": "Maintains APIs specific to application life cycle events, like create, update status and references etc."
+    },
+    {
+      "name": "ApplicationReferralController",
+      "description": "Maintains APIs to support submission and retrieval of QR/referral code"
+    },
+    {
+      "name": "ApplicationStatusController",
+      "description": "Maintains APIs responsible to get and update status for customer's covered card application"
+    },
+    {
+      "name": "ApplicationTermsController",
+      "description": "Maintains APIs specific to T&C, and Contracts for an application"
+    },
+    {
+      "name": "BAUApplicationController",
+      "description": "BAU Application Controller"
+    },
+    {
+      "name": "IdentificationController",
+      "description": "Identification Controller"
+    },
+    {
+      "name": "JobController",
+      "description": "Controller for system jobs."
+    },
+    {
+      "name": "OTPController",
+      "description": "Pass-through for OTP requests to OTP-Service."
+    },
+    {
+      "name": "ProductController",
+      "description": "Product Controller"
+    },
+    {
+      "name": "campaign-controller",
+      "description": "Campaign Controller"
+    }
+  ],
+  "paths": {
+    "/application/BAU/status/{finance-id}": {
+      "get": {
+        "tags": [
+          "BAUApplicationController"
+        ],
+        "summary": "Get current status of a BAU coveredCard application.",
+        "operationId": "getBAUApplicationUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "finance-id",
+          "in": "path",
+          "description": "finance-id",
+          "required": true,
+          "type": "string"
+        },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BAUApplicationResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/BAU/track-application/{finance-id}": {
+      "post": {
+        "tags": [
+          "BAUApplicationController"
+        ],
+        "summary": "Persists BAU covered card application and finance details.",
+        "operationId": "startBAUApplicationTrackingUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "finance-id",
+          "in": "path",
+          "description": "finance-id",
+          "required": true,
+          "type": "string"
+        },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/BAUApplicationTrackResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/employment": {
+      "post": {
+        "tags": [
+          "ApplicationLifecycleController"
+        ],
+        "summary": "Updates the customer employment details",
+        "operationId": "saveEmploymentDetailsUsingPOST",
+        "consumes": [
+          "application/json",
+          "multipart/form-data"
+        ],
+        "produces": [
+          "*/*",
+          "application/json"
+        ],
+        "parameters": [{
+          "in": "formData",
+          "name": "data",
+          "description": "data",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/EmploymentUpdateRequest"
+          }
+        },
+          {
+            "name": "files",
+            "in": "formData",
+            "description": "files",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "file"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResponseEntity"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/event/log": {
+      "post": {
+        "tags": [
+          "ApplicationAuditController"
+        ],
+        "summary": "Maintains the user activity logs for all the event generated while the user navigates through the application",
+        "description": "Audit logs are maintained in house.",
+        "operationId": "logEventUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "in": "body",
+          "name": "createEventLogRequest",
+          "description": "createEventLogRequest",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/EventLogDTO"
+          }
+        },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/identification": {
+      "post": {
+        "tags": [
+          "IdentificationController"
+        ],
+        "summary": "Accepts user's identification document.",
+        "operationId": "submitIdentificationDocumentUsingPOST",
+        "consumes": [
+          "application/json",
+          "multipart/form-data"
+        ],
+        "produces": [
+          "*/*",
+          "application/json"
+        ],
+        "parameters": [{
+          "in": "formData",
+          "name": "data",
+          "description": "data",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/IdentificationUpdateRequestWrapper"
+          }
+        },
+          {
+            "name": "files",
+            "in": "formData",
+            "description": "files",
+            "required": true,
+            "type": "array",
+            "items": {
+              "type": "file"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/new": {
+      "post": {
+        "tags": [
+          "ApplicationLifecycleController"
+        ],
+        "summary": "Creates a new covered card application. It should be consumed once the customer accepts credit-check T&C.",
+        "operationId": "createApplicationUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "in": "body",
+          "name": "applicationRequest",
+          "description": "applicationRequest",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/ApplicationCreateRequest"
+          }
+        },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/NewApplicationCreationResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/product-details": {
+      "post": {
+        "tags": [
+          "ApplicationLifecycleController"
+        ],
+        "summary": "Persists covered card application and product details in covered-card service.",
+        "operationId": "saveApplicationAndProductDetailsUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "in": "body",
+          "name": "applicationProductDetailsRequest",
+          "description": "applicationProductDetailsRequest",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/ApplicationProductDetailsRequest"
+          }
+        },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/references": {
+      "post": {
+        "tags": [
+          "ApplicationLifecycleController"
+        ],
+        "summary": "Create references records required to create covered card.",
+        "operationId": "createApplicationReferencesUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "in": "body",
+          "name": "referencesRequest",
+          "description": "referencesRequest",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/ReferencesDTO"
+          }
+        },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/referral": {
+      "get": {
+        "tags": [
+          "ApplicationReferralController"
+        ],
+        "summary": "getReferralDetails",
+        "operationId": "getReferralDetailsUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "x-api-version",
+          "in": "header",
+          "description": "API version. Supports semantic versioning.",
+          "required": false,
+          "type": "string",
+          "x-example": "1"
+        },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ReferralDetailResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "ApplicationReferralController"
+        ],
+        "summary": "processReferralRequest",
+        "operationId": "processReferralRequestUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "in": "body",
+          "name": "referralDetails",
+          "description": "referralDetails",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/Corresponds to the QR code, system takes to recognize supporting staff member."
+          }
+        },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResponseEntity"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/status": {
+      "get": {
+        "tags": [
+          "ApplicationStatusController"
+        ],
+        "summary": "Get current status of a coveredCard application.",
+        "operationId": "getApplicationStatusUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "x-api-version",
+          "in": "header",
+          "description": "API version. Supports semantic versioning.",
+          "required": false,
+          "type": "string",
+          "x-example": "1"
+        },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ApplicationStatusDTO"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/steps": {
+      "get": {
+        "tags": [
+          "ApplicationStatusController"
+        ],
+        "summary": "Get tracker steps required to create covered card.",
+        "operationId": "getApplicationStepsUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "x-api-version",
+          "in": "header",
+          "description": "API version. Supports semantic versioning.",
+          "required": false,
+          "type": "string",
+          "x-example": "1"
+        },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/StepsDTO"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/tnc/credit-check": {
+      "get": {
+        "tags": [
+          "ApplicationTermsController"
+        ],
+        "summary": "Retrieves the terms and conditions html file of Salary and Credit. Document format: `text/html`.",
+        "operationId": "getCreditCheckVerifyTnCUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "x-api-version",
+          "in": "header",
+          "description": "API version. Supports semantic versioning.",
+          "required": false,
+          "type": "string",
+          "x-example": "1"
+        },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ContentResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/tnc/takaful": {
+      "get": {
+        "tags": [
+          "ApplicationTermsController"
+        ],
+        "summary": "Retrieves the terms and conditions html file of Takaful. Document format: `text/html`.",
+        "operationId": "getTakafulTnCUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "x-api-version",
+          "in": "header",
+          "description": "API version. Supports semantic versioning.",
+          "required": false,
+          "type": "string",
+          "x-example": "1"
+        },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ContentResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/tnc/{application-id}/contract/{type}": {
+      "get": {
+        "tags": [
+          "ApplicationTermsController"
+        ],
+        "summary": "Retrieves the covered card contract from FinnOne via ESB. Document format: `text/html`.",
+        "description": "ESB Service: XPRESS.FINANCE",
+        "operationId": "getFinanceContractUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "application-id",
+          "in": "path",
+          "description": "application-id",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+        },
+          {
+            "name": "type",
+            "in": "path",
+            "description": "type",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "MURABAHA",
+              "OFFER_TO_SELL",
+              "SERVICE"
+            ]
+          },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ContentResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/tnc/{application-id}/contracts/accept": {
+      "post": {
+        "tags": [
+          "ApplicationTermsController"
+        ],
+        "summary": "Accept the covered card contracts in FinnOne via ESB.",
+        "description": "ESB Service: XPRESS.FINANCE",
+        "operationId": "acceptFinanceContractsUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "in": "body",
+          "name": "acceptFinanceContractsRequest",
+          "description": "acceptFinanceContractsRequest",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/AcceptFinanceContractsRequest"
+          }
+        },
+          {
+            "name": "application-id",
+            "in": "path",
+            "description": "application-id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/{application-id}/commodity": {
+      "patch": {
+        "tags": [
+          "ApplicationLifecycleController"
+        ],
+        "summary": "API to update application status to commodity Obtained.",
+        "operationId": "updateApplicationCommodityUsingPATCH",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "application-id",
+          "in": "path",
+          "description": "application-id",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+        },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/{application-id}/deactivate": {
+      "patch": {
+        "tags": [
+          "ApplicationLifecycleController"
+        ],
+        "summary": "update application state to inactive.",
+        "description": "Request will update application state to inactive",
+        "operationId": "deactivateApplicationUsingPATCH",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "application-id",
+          "in": "path",
+          "description": "application-id",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+        },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/{application-id}/employment": {
+      "get": {
+        "tags": [
+          "ApplicationLifecycleController"
+        ],
+        "summary": "Fetch the customer employment details",
+        "operationId": "getEmploymentDetailsUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "application-id",
+          "in": "path",
+          "description": "application-id",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+        },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmploymentDetailsDTO"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/{application-id}/employment/v2": {
+      "get": {
+        "tags": [
+          "ApplicationLifecycleController"
+        ],
+        "summary": "Fetch the customer employment details v2",
+        "operationId": "getEmploymentDetailsViaETLUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "application-id",
+          "in": "path",
+          "description": "application-id",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+        },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmploymentDetailsDTO"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/{application-id}/limit": {
+      "get": {
+        "tags": [
+          "ApplicationLifecycleController"
+        ],
+        "summary": "Retrieves the selected covered card approved limit.",
+        "description": "Response will contain other metadata too",
+        "operationId": "getApprovedProductLimitUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "application-id",
+          "in": "path",
+          "description": "application-id",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+        },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/LimitResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      },
+      "patch": {
+        "tags": [
+          "ApplicationLifecycleController"
+        ],
+        "summary": "Update the covered card approved limit.",
+        "description": "Request will update other metadata too",
+        "operationId": "updateApprovedProductLimitUsingPATCH",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "application-id",
+          "in": "path",
+          "description": "application-id",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+        },
+          {
+            "in": "body",
+            "name": "updateLimitDTO",
+            "description": "updateLimitDTO",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateLimitDTO"
+            }
+          },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/application/{application-id}/references/{type}": {
+      "get": {
+        "tags": [
+          "ApplicationLifecycleController"
+        ],
+        "summary": "Get references records required to create covered card.",
+        "operationId": "getApplicationReferencesUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "application-id",
+          "in": "path",
+          "description": "application-id",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+        },
+          {
+            "name": "type",
+            "in": "path",
+            "description": "type",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "UAE",
+              "HOME_COUNTRY"
+            ]
+          },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ReferencesDTO"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/campaign": {
+      "get": {
+        "tags": [
+          "campaign-controller"
+        ],
+        "summary": "getCampaigns",
+        "operationId": "getCampaignsUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "x-api-version",
+          "in": "header",
+          "description": "API version. Supports semantic versioning.",
+          "required": false,
+          "type": "string",
+          "x-example": "1"
+        },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CampaignResponseModel"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "campaign-controller"
+        ],
+        "summary": "createCampaign",
+        "operationId": "createCampaignUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "in": "body",
+          "name": "campaign",
+          "description": "campaign",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/CampaignModel"
+          }
+        },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/CampaignResponseModel"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/campaign/campaignAndEligibility": {
+      "get": {
+        "tags": [
+          "campaign-controller"
+        ],
+        "summary": "fetches user's eligibility and campaign details",
+        "operationId": "getCampaignAndEligibilityUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "x-api-version",
+          "in": "header",
+          "description": "API version. Supports semantic versioning.",
+          "required": false,
+          "type": "string",
+          "x-example": "1"
+        },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CampaignAndEligibilityResponseModel"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/campaign/track-dismissal": {
+      "post": {
+        "tags": [
+          "campaign-controller"
+        ],
+        "summary": "API to track explicit dismissal of banner by user",
+        "operationId": "trackDismissalUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "x-api-version",
+          "in": "header",
+          "description": "API version. Supports semantic versioning.",
+          "required": false,
+          "type": "string",
+          "x-example": "1"
+        },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/campaign/{id}": {
+      "get": {
+        "tags": [
+          "campaign-controller"
+        ],
+        "summary": "getCampaignById",
+        "operationId": "getCampaignByIdUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "id",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+        },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CampaignResponseModel"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/eligibility-check": {
+      "get": {
+        "tags": [
+          "ProductController"
+        ],
+        "summary": "Determines whether the current customer is eligible for Covered-Card offer",
+        "operationId": "checkCustomerEligibilityUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "x-api-version",
+          "in": "header",
+          "description": "API version. Supports semantic versioning.",
+          "required": false,
+          "type": "string",
+          "x-example": "1"
+        },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EligibilityCheckResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/job/rectify-application-creation": {
+      "get": {
+        "tags": [
+          "JobController"
+        ],
+        "summary": "Job to rectify discrepancies while new application creation. Implementation looks for applications, not marked duly completed (say, for example, due to request timeouts), and attempts to complete the flow by uploading supporting documents",
+        "operationId": "rectifyApplicationCreationUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "x-api-version",
+          "in": "header",
+          "description": "API version. Supports semantic versioning.",
+          "required": false,
+          "type": "string",
+          "x-example": "1"
+        },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FinanceApplicationDetailResponse"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/otp/generate": {
+      "post": {
+        "tags": [
+          "OTPController"
+        ],
+        "summary": "API to generate OTP",
+        "operationId": "generateOTPUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "in": "body",
+          "name": "request",
+          "description": "request",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/OtpRequest"
+          }
+        },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GenerateOtpDTO"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": [
+          "ProductController"
+        ],
+        "summary": "API to get covered card products.",
+        "operationId": "getProductsUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "gender",
+          "in": "query",
+          "description": "gender",
+          "required": false,
+          "type": "string",
+          "default": "Unknown"
+        },
+          {
+            "name": "preference",
+            "in": "query",
+            "description": "preference",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "salary",
+            "in": "query",
+            "description": "Salary filter will be considered for non-ETL customers only",
+            "required": false,
+            "type": "integer",
+            "format": "int64",
+            "allowEmptyValue": false
+          },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ProductCatalogResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/products/preferences": {
+      "get": {
+        "tags": [
+          "ProductController"
+        ],
+        "summary": "API to get covered card product Preferences.",
+        "operationId": "getUserPreferencesUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "x-api-version",
+          "in": "header",
+          "description": "API version. Supports semantic versioning.",
+          "required": false,
+          "type": "string",
+          "x-example": "1"
+        },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserPreferences"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    },
+    "/products/{product-id}": {
+      "get": {
+        "tags": [
+          "ProductController"
+        ],
+        "summary": "getProductById",
+        "operationId": "getProductByIdUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [{
+          "name": "check-eligibility",
+          "in": "query",
+          "description": "check-eligibility",
+          "required": false,
+          "type": "boolean",
+          "default": true
+        },
+          {
+            "name": "product-id",
+            "in": "path",
+            "description": "product-id",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "x-api-version",
+            "in": "header",
+            "description": "API version. Supports semantic versioning.",
+            "required": false,
+            "type": "string",
+            "x-example": "1"
+          },
+          {
+            "name": "x-application-name",
+            "in": "header",
+            "description": "Application name",
+            "required": true,
+            "type": "string",
+            "x-example": "CVC"
+          },
+          {
+            "name": "x-channel-id",
+            "in": "header",
+            "description": "Channel Id",
+            "required": true,
+            "type": "string",
+            "default": "MOBN"
+          },
+          {
+            "name": "x-language",
+            "in": "header",
+            "description": "User locale",
+            "required": true,
+            "type": "string",
+            "default": "en"
+          },
+          {
+            "name": "x-rim",
+            "in": "header",
+            "description": "Customer identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-unique-id",
+            "in": "header",
+            "description": "Unique request id",
+            "required": true,
+            "type": "string",
+            "x-example": "cb903718-0c00-4480-a0ec-1869fbff7510"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/SingleProductResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        },
+        "security": [{
+          "Authorization": [
+            "global"
+          ]
+        }],
+        "deprecated": false
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Authorization": {
+      "type": "apiKey",
+      "name": "x-application-secret",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "AcceptFinanceContractsRequest": {
+      "type": "object",
+      "properties": {
+        "contracts": {
+          "type": "array",
+          "description": "List of contracts to accept",
+          "items": {
+            "$ref": "#/definitions/Contract"
+          }
+        },
+        "otpAuth": {
+          "description": "otpAuth",
+          "$ref": "#/definitions/ValidateOTPRequest"
+        }
+      },
+      "title": "AcceptFinanceContractsRequest",
+      "description": "Accept finance contracts details"
+    },
+    "AccountInformation": {
+      "type": "object",
+      "properties": {
+        "accountNumber": {
+          "type": "string",
+          "example": 123456789089,
+          "description": "Auto debit account number"
+        },
+        "type": {
+          "type": "string",
+          "example": "SAV",
+          "description": "Auto debit account type"
+        }
+      },
+      "title": "AccountInformation",
+      "description": "Request model for account information."
+    },
+    "ApplicationCreateRequest": {
+      "type": "object",
+      "properties": {
+        "applicationId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "covered card applicationId"
+        },
+        "otpAuth": {
+          "description": "otpAuth",
+          "$ref": "#/definitions/ValidateOTPRequest"
+        }
+      },
+      "title": "ApplicationCreateRequest"
+    },
+    "ApplicationDetails": {
+      "type": "object",
+      "properties": {
+        "currentStage": {
+          "type": "string"
+        },
+        "vendorRef": {
+          "type": "string"
+        }
+      },
+      "title": "ApplicationDetails"
+    },
+    "ApplicationProductDetailsRequest": {
+      "type": "object",
+      "properties": {
+        "cardCategory": {
+          "type": "string",
+          "description": "Card category of the card selected by user from product catalog."
+        },
+        "cardCode": {
+          "type": "string",
+          "description": "Card code of the card selected by user from product catalog."
+        },
+        "cityCode": {
+          "type": "string",
+          "description": "Required in combination with Etisalat. Specifies the city, your Etisalat number belongs to."
+        },
+        "emailId": {
+          "type": "string",
+          "description": "EmailId of the user."
+        },
+        "embossingName": {
+          "type": "string",
+          "description": "Name to be printed on the covered-card."
+        },
+        "salary": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Salary provided by the user."
+        },
+        "vendorMembershipId": {
+          "type": "string",
+          "description": "MembershipId of the card product e.g. incase of Etihad card it is EtihadGuestNumber and incase of Etisalat it is Registered MobileNUmber."
+        }
+      },
+      "title": "ApplicationProductDetailsRequest",
+      "description": "Model representing the Product Details for creating covered card application."
+    },
+    "ApplicationStatusDTO": {
+      "type": "object",
+      "properties": {
+        "applicationId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ApplicationId for covered card application"
+        },
+        "daysToExpiry": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of days left for offer expiry"
+        },
+        "financeApplicationId": {
+          "type": "string",
+          "description": "Finance ApplicationId for covered card application"
+        },
+        "source": {
+          "type": "string",
+          "description": "Source of application",
+          "enum": [
+            "DTS",
+            "BAU"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of respective Step in covered card application",
+          "enum": [
+            "READY",
+            "PENDING",
+            "APPROVED",
+            "ACCEPTED",
+            "REJECTED",
+            "DECLINED",
+            "FAILED",
+            "EXPIRED",
+            "DISBURSED",
+            "COMMODITY_OBTAINED",
+            "RECEIVED_SUPPORTING_DOCUMENTS",
+            "RECEIVED_CUSTOMER_CONSENT",
+            "PENDING_DOCUMENT_UPLOAD",
+            "NON_EMPLOYED",
+            "REFERRAL_RECEIVED"
+          ]
+        },
+        "step": {
+          "type": "string",
+          "description": "Step in covered card application",
+          "enum": [
+            "NOT_APPLIED",
+            "UPDATE_IDENTITY_DOCUMENTS",
+            "CONFIRM_EMPLOYMENT_DETAILS",
+            "PROVIDE_REFERENCES",
+            "UPLOAD_INCOME_PROOF",
+            "VERIFY_FINANCIAL_INFORMATION",
+            "SIGN_SECURITY_CHEQUE_VIEW_MURABAHA",
+            "ACCEPT_CONTRACT"
+          ]
+        }
+      },
+      "title": "ApplicationStatusDTO",
+      "description": "Model representing the Business Details for covered card application."
+    },
+    "BAUApplicationResponse": {
+      "type": "object",
+      "properties": {
+        "product": {
+          "type": "string",
+          "description": "ApplicationId for covered card application",
+          "enum": [
+            "COVERED_CARD",
+            "PERSONAL_FINANCE"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "description": "Current status of the application",
+          "enum": [
+            "PENDING",
+            "PENDING_DISBURSAL",
+            "DISBURSED",
+            "APPROVED",
+            "REJECTED",
+            "CANCEL",
+            "EXPIRED",
+            "CANCELLED_POST_APPROVAL",
+            "UPDATE_LIMIT",
+            "MURABAHA_READY_TO_READ",
+            "MURABAHA_READY_TO_SIGN",
+            "STL_REQUIRED",
+            "STL_REJECTED",
+            "CANCELLED_BY_BPM"
+          ]
+        }
+      },
+      "title": "BAUApplicationResponse",
+      "description": "Model representing the status Details of a BAU covered card application."
+    },
+    "BAUApplicationTrackResponse": {
+      "type": "object",
+      "properties": {
+        "applicationId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ApplicationId for covered card application"
+        },
+        "closedExistingApp": {
+          "type": "boolean",
+          "description": "Is already existing application closed"
+        }
+      },
+      "title": "BAUApplicationTrackResponse",
+      "description": "BAU application start tracking response."
+    },
+    "BenefitsAndProductTerms": {
+      "type": "object",
+      "properties": {
+        "annualFee": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BenefitsItems"
+          }
+        },
+        "minCardLimit": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "minSalary": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "title": "BenefitsAndProductTerms"
+    },
+    "BenefitsItems": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "extLink": {
+          "type": "string"
+        },
+        "extLinkText": {
+          "type": "string"
+        },
+        "highlights": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "iconUrl": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "title": "BenefitsItems"
+    },
+    "BranchDetailsDTO": {
+      "type": "object",
+      "properties": {
+        "branchAreaName": {
+          "type": "string"
+        },
+        "branchCityName": {
+          "type": "string"
+        },
+        "branchCode": {
+          "type": "string"
+        },
+        "branchCountry": {
+          "type": "string"
+        },
+        "branchDesc": {
+          "type": "string"
+        },
+        "branchLatitude": {
+          "type": "number",
+          "format": "float"
+        },
+        "branchLongitude": {
+          "type": "number",
+          "format": "float"
+        },
+        "branchPhone": {
+          "type": "string"
+        },
+        "branchPinCode": {
+          "type": "string"
+        },
+        "branchStreetName": {
+          "type": "string"
+        }
+      },
+      "title": "BranchDetailsDTO",
+      "description": "Model representing the Branch Details."
+    },
+    "CampaignAndEligibilityResponseModel": {
+      "type": "object",
+      "properties": {
+        "campaignDetailResponse": {
+          "$ref": "#/definitions/CampaignDetailResponse"
+        },
+        "eligibilityCheckResponse": {
+          "$ref": "#/definitions/EligibilityCheckResponse"
+        }
+      },
+      "title": "CampaignAndEligibilityResponseModel"
+    },
+    "CampaignDetailResponse": {
+      "type": "object",
+      "properties": {
+        "bannerImageUrlAr": {
+          "type": "string"
+        },
+        "bannerImageUrlEn": {
+          "type": "string"
+        },
+        "cardCode": {
+          "type": "string"
+        },
+        "ctaLabelAr": {
+          "type": "string"
+        },
+        "ctaLabelEn": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "showBanner": {
+          "type": "boolean"
+        },
+        "targetRIMs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "CampaignDetailResponse"
+    },
+    "CampaignModel": {
+      "type": "object",
+      "properties": {
+        "bannerImageUrlAr": {
+          "type": "string"
+        },
+        "bannerImageUrlEn": {
+          "type": "string"
+        },
+        "cardCode": {
+          "type": "string"
+        },
+        "ctaLabelAr": {
+          "type": "string"
+        },
+        "ctaLabelEn": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "targetRIMs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "CampaignModel"
+    },
+    "CampaignResponseModel": {
+      "type": "object",
+      "properties": {
+        "active": {
+          "type": "boolean"
+        },
+        "bannerImageUrlAr": {
+          "type": "string"
+        },
+        "bannerImageUrlEn": {
+          "type": "string"
+        },
+        "cardCode": {
+          "type": "string"
+        },
+        "ctaLabelAr": {
+          "type": "string"
+        },
+        "ctaLabelEn": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "publishedOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "targetRIMs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "CampaignResponseModel"
+    },
+    "CardType": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "CardType"
+    },
+    "CategoriesDetails": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "rank": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "title": "CategoriesDetails"
+    },
+    "ContentResponse": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "Base64 encoded contract text"
+        },
+        "contentType": {
+          "type": "string",
+          "example": "text/html",
+          "description": "MIME type for contents"
+        }
+      },
+      "title": "ContentResponse"
+    },
+    "Contract": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "Base64 encoded contract text"
+        },
+        "contentType": {
+          "type": "string",
+          "example": "text/html",
+          "description": "MIME type for contents"
+        },
+        "type": {
+          "type": "string",
+          "description": "Contract type to accept",
+          "enum": [
+            "MURABAHA",
+            "OFFER_TO_SELL",
+            "SERVICE"
+          ]
+        }
+      },
+      "title": "Contract",
+      "description": "Finance contract details"
+    },
+    "Corresponds to the QR code, system takes to recognize supporting staff member.": {
+      "type": "object",
+      "properties": {
+        "qrCode": {
+          "type": "string",
+          "description": "Ciphered QR code string"
+        }
+      },
+      "title": "Corresponds to the QR code, system takes to recognize supporting staff member."
+    },
+    "EligibilityCheckResponse": {
+      "type": "object",
+      "properties": {
+        "eligible": {
+          "type": "boolean"
+        },
+        "ineligibilityReason": {
+          "type": "string",
+          "enum": [
+            "NOT_SALARIED_WITH_US",
+            "EARNS_LESS",
+            "APPLICATION_EXISTS",
+            "NON_EMPLOYED_RECENTLY"
+          ]
+        }
+      },
+      "title": "EligibilityCheckResponse"
+    },
+    "EmiratesIdDetails": {
+      "type": "object",
+      "properties": {
+        "birthDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "documentNumber": {
+          "type": "string"
+        },
+        "expiryDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "fileNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "identityNumber": {
+          "type": "string"
+        },
+        "issuingCountry": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "nationality": {
+          "type": "string"
+        },
+        "profilePicFileName": {
+          "type": "string"
+        },
+        "sex": {
+          "type": "string"
+        }
+      },
+      "title": "EmiratesIdDetails"
+    },
+    "EmploymentDetailsDTO": {
+      "type": "object",
+      "properties": {
+        "applicationId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Application ID"
+        },
+        "cityCode": {
+          "type": "string",
+          "description": "Working City Code"
+        },
+        "contactNumber": {
+          "type": "string",
+          "description": "Employer Contact Number"
+        },
+        "designation": {
+          "type": "string",
+          "description": "Designation"
+        },
+        "designationCode": {
+          "type": "string",
+          "description": "Designation Code"
+        },
+        "employer": {
+          "type": "string",
+          "description": "Employer Name"
+        },
+        "employerCode": {
+          "type": "string",
+          "description": "Employer Code"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Id for employment detail record"
+        },
+        "isTml": {
+          "type": "boolean",
+          "description": "Employment is TML or not"
+        },
+        "joiningDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Joining Date"
+        },
+        "monthlySalary": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Monthly Salary"
+        },
+        "occupationType": {
+          "type": "string",
+          "description": "Employment Status",
+          "enum": [
+            "EMPLOYED",
+            "SELF_EMPLOYED",
+            "UNEMPLOYED",
+            "UNKNOWN"
+          ]
+        }
+      },
+      "title": "EmploymentDetailsDTO",
+      "description": "Model representing the Employment Details for create covered card steps."
+    },
+    "EmploymentUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "documentType": {
+          "type": "string",
+          "enum": [
+            "EMIRATES_ID",
+            "PASSPORT",
+            "INACTIVE_PASSPORT",
+            "SECONDARY_PASSPORT",
+            "UAE_VISA",
+            "SALARY_CERTIFICATE",
+            "PAY_SLIP",
+            "CONSENT_LETTER"
+          ]
+        },
+        "employmentDetails": {
+          "$ref": "#/definitions/EmploymentDetailsDTO"
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "file"
+          }
+        }
+      },
+      "title": "EmploymentUpdateRequest"
+    },
+    "ErrorResponseModel": {
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "properties": {
+        "blockedUntil": {
+          "type": "string",
+          "format": "date-time",
+          "description": "OTP service blocked until"
+        },
+        "code": {
+          "type": "string",
+          "description": "Identifier for the base error cause.",
+          "enum": [
+            "UNKNOWN",
+            "NOT_IMPLEMENTED",
+            "BAD_REQUEST",
+            "NOT_FOUND",
+            "PRE_CONDITION_FAILED",
+            "INTERNAL_SERVER_ERROR",
+            "UNAUTHORIZED",
+            "OTP_SERVICE_FAILURE",
+            "ESB_FAILURE",
+            "SERVICE_INVOCATION_FAILURE",
+            "CONTRACTS_EXPIRED",
+            "VALIDATION_FAILURE",
+            "NOT_YET_AVAILABLE",
+            "INVALID_QR_CODE",
+            "FORBIDDEN"
+          ]
+        },
+        "desc": {
+          "type": "string",
+          "description": "Describes the error in greater details. It also holds the tracking information."
+        },
+        "fieldErrors": {
+          "type": "array",
+          "description": "Usage: Form validations at server. Suggests why server rejected a particular form path /attribute.",
+          "items": {
+            "$ref": "#/definitions/FieldError"
+          }
+        },
+        "remainingAttempts": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Remaining otp attempts"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the particular error occurred."
+        },
+        "vendorStatus": {
+          "type": "string",
+          "description": "Gives insight of what went wrong to the request we made to an external service."
+        }
+      },
+      "title": "ErrorResponseModel",
+      "description": "Model representing the error response."
+    },
+    "EventLogDTO": {
+      "type": "object",
+      "properties": {
+        "applicationId": {
+          "type": "integer",
+          "format": "int64",
+          "example": "15487450",
+          "description": "Application number/id for applied offer"
+        },
+        "deviceId": {
+          "type": "string",
+          "example": "11"
+        },
+        "deviceIp": {
+          "type": "string",
+          "example": "10.20.20"
+        },
+        "deviceModel": {
+          "type": "string",
+          "example": "samsung"
+        },
+        "deviceOs": {
+          "type": "string",
+          "example": "SNAP"
+        },
+        "eventCategory": {
+          "type": "string",
+          "enum": [
+            "CREDIT_CHECK_EVENT",
+            "MURABAHA",
+            "TAKAFUL",
+            "OFFER_TO_SELL",
+            "SERVICE",
+            "CREDIT_CHECK_OTP",
+            "FINANCE_CONTRACT_OTP",
+            "OTHER_OTP"
+          ]
+        },
+        "eventType": {
+          "type": "string",
+          "enum": [
+            "TNC_HAS_BEEN_DISPLAYED",
+            "TNC_HAS_BEEN_READ",
+            "TNC_HAS_BEEN_AGREED",
+            "TNC_OTP_HAS_BEEN_VALIDATED",
+            "TNC_OTP_HAS_BEEN_FAILED",
+            "TNC_OTP_HAS_BEEN_SENT",
+            "TNC_OTP_HAS_BEEN_RESENT",
+            "CONTRACT_HAS_BEEN_DISPLAYED",
+            "CONTRACT_HAS_BEEN_READ",
+            "CONTRACT_HAS_BEEN_AGREED",
+            "TAKAFUL_HAS_BEEN_DISPLAYED",
+            "TAKAFUL_HAS_BEEN_READ",
+            "TAKAFUL_HAS_BEEN_AGREED",
+            "OTP_HAS_BEEN_SENT",
+            "OTP_HAS_BEEN_VALIDATED",
+            "OTP_HAS_BEEN_FAILED",
+            "OTP_HAS_BEEN_RESENT"
+          ]
+        }
+      },
+      "title": "EventLogDTO"
+    },
+    "FieldError": {
+      "type": "object",
+      "properties": {
+        "constraint": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "title": "FieldError"
+    },
+    "FinanceApplicationDetailResponse": {
+      "type": "object",
+      "properties": {
+        "applicationId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "createdOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "customerNumber": {
+          "type": "string"
+        },
+        "esbReferenceNumber": {
+          "type": "string"
+        },
+        "fidorId": {
+          "type": "string"
+        }
+      },
+      "title": "FinanceApplicationDetailResponse"
+    },
+    "GenerateOtpDTO": {
+      "type": "object",
+      "properties": {
+        "mobileNumber": {
+          "type": "string",
+          "description": "Mobile Number"
+        },
+        "referenceNumber": {
+          "type": "string",
+          "description": "Reference Number for OTP validation"
+        }
+      },
+      "title": "GenerateOtpDTO"
+    },
+    "IdentificationUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "documentType": {
+          "type": "string",
+          "enum": [
+            "EMIRATES_ID",
+            "PASSPORT",
+            "INACTIVE_PASSPORT",
+            "SECONDARY_PASSPORT",
+            "UAE_VISA",
+            "SALARY_CERTIFICATE",
+            "PAY_SLIP",
+            "CONSENT_LETTER"
+          ]
+        },
+        "emiratesId": {
+          "$ref": "#/definitions/EmiratesIdDetails"
+        },
+        "passport": {
+          "$ref": "#/definitions/PassportDetails"
+        },
+        "visa": {
+          "$ref": "#/definitions/UAEVisaDetails"
+        }
+      },
+      "title": "IdentificationUpdateRequest"
+    },
+    "IdentificationUpdateRequestWrapper": {
+      "type": "object",
+      "properties": {
+        "applicationId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Application Id"
+        },
+        "identities": {
+          "type": "array",
+          "description": "Identities array",
+          "items": {
+            "$ref": "#/definitions/IdentificationUpdateRequest"
+          }
+        }
+      },
+      "title": "IdentificationUpdateRequestWrapper",
+      "description": "Model representing the provide identity documents for covered card application."
+    },
+    "LimitResponse": {
+      "type": "object",
+      "properties": {
+        "maxLimit": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "minLimit": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "monthlyRepayments": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "profitRate": {
+          "type": "number"
+        }
+      },
+      "title": "LimitResponse"
+    },
+    "NewApplicationCreationResponse": {
+      "type": "object",
+      "properties": {
+        "application": {
+          "$ref": "#/definitions/ApplicationDetails"
+        },
+        "channelRef": {
+          "type": "string"
+        },
+        "customerNumber": {
+          "type": "string"
+        },
+        "error": {
+          "type": "string"
+        },
+        "financeId": {
+          "type": "string"
+        },
+        "requestDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "SUCCESS",
+            "VENDOR_TIMED_OUT",
+            "ERROR_UNKNOWN"
+          ]
+        }
+      },
+      "title": "NewApplicationCreationResponse"
+    },
+    "OtpRequest": {
+      "type": "object",
+      "properties": {
+        "applicationId": {
+          "type": "integer",
+          "format": "int64",
+          "example": "15487450",
+          "description": "Application number/id against which otp is being generated"
+        },
+        "deviceId": {
+          "type": "string",
+          "example": "11"
+        },
+        "deviceIp": {
+          "type": "string",
+          "example": "10.20.20"
+        },
+        "deviceModel": {
+          "type": "string",
+          "example": "samsung"
+        },
+        "deviceOs": {
+          "type": "string",
+          "example": "SNAP"
+        },
+        "operation": {
+          "type": "string",
+          "description": "Operation for which OTP validation is used",
+          "enum": [
+            "CVC_CREDIT_CHECK",
+            "CVC_FINANCE_CONTRACTS_ACCEPT"
+          ]
+        }
+      },
+      "title": "OtpRequest"
+    },
+    "PassportDetails": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "birthDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "birthPlace": {
+          "type": "string"
+        },
+        "documentNumber": {
+          "type": "string"
+        },
+        "expiryDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "fatherName": {
+          "type": "string"
+        },
+        "fileNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "identityNumber": {
+          "type": "string"
+        },
+        "issueDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "issuingCountry": {
+          "type": "string"
+        },
+        "issuingPlace": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "motherName": {
+          "type": "string"
+        },
+        "nationality": {
+          "type": "string"
+        },
+        "profilePicFileName": {
+          "type": "string"
+        },
+        "sex": {
+          "type": "string"
+        }
+      },
+      "title": "PassportDetails"
+    },
+    "Product": {
+      "type": "object",
+      "properties": {
+        "additionalBenefits": {
+          "$ref": "#/definitions/BenefitsAndProductTerms"
+        },
+        "alias": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bgImageUrl": {
+          "type": "string"
+        },
+        "cardCode": {
+          "type": "string"
+        },
+        "cardId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "cardTypeCode": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "embossingImageOrientation": {
+          "type": "string",
+          "enum": [
+            "PORTRAIT_SINGLE",
+            "PORTRAIT_DOUBLE",
+            "LANDSCAPE_SINGLE"
+          ]
+        },
+        "embossingImageUrl": {
+          "type": "string"
+        },
+        "highlight": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "inCategoryRank": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "keyBenefits": {
+          "$ref": "#/definitions/BenefitsAndProductTerms"
+        },
+        "partnerCode": {
+          "type": "string"
+        },
+        "prerequisites": {
+          "$ref": "#/definitions/BenefitsAndProductTerms"
+        },
+        "productProfileCode": {
+          "type": "string"
+        },
+        "profitRate": {
+          "type": "number",
+          "format": "float"
+        },
+        "summarizedBenefits": {
+          "$ref": "#/definitions/BenefitsAndProductTerms"
+        },
+        "terms": {
+          "$ref": "#/definitions/BenefitsAndProductTerms"
+        },
+        "title": {
+          "type": "string"
+        },
+        "usefulLinks": {
+          "$ref": "#/definitions/BenefitsAndProductTerms"
+        },
+        "user_preference_ranking": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "title": "Product"
+    },
+    "ProductCatalogResponse": {
+      "type": "object",
+      "properties": {
+        "cardTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CardType"
+          }
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CategoriesDetails"
+          }
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Product"
+          }
+        },
+        "user_preferences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserPreferences"
+          }
+        }
+      },
+      "title": "ProductCatalogResponse"
+    },
+    "ReferenceDetailsDTO": {
+      "type": "object",
+      "properties": {
+        "contactNumber": {
+          "type": "string",
+          "description": "Contact number of the referrer for covered card application"
+        },
+        "countryCode": {
+          "type": "string",
+          "description": "Country code of the referrer for covered card application"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the referrer for covered card application"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the referrer for covered card application",
+          "enum": [
+            "UAE",
+            "HOME_COUNTRY"
+          ]
+        }
+      },
+      "title": "ReferenceDetailsDTO",
+      "description": "Model representing the provide references details for covered card application."
+    },
+    "ReferencesDTO": {
+      "type": "object",
+      "properties": {
+        "applicationId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ApplicationId for covered card application"
+        },
+        "referenceDetails": {
+          "type": "array",
+          "description": "List of reference Details containing referrer name, contact_number and type i.e. {UAE/HOME_COUNTRY}",
+          "items": {
+            "$ref": "#/definitions/ReferenceDetailsDTO"
+          }
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of referrer for covered card application",
+          "enum": [
+            "UAE",
+            "HOME_COUNTRY"
+          ]
+        },
+        "uaeNationality": {
+          "type": "boolean",
+          "description": "Field specifying nationality of customer is UAE or not."
+        }
+      },
+      "title": "ReferencesDTO",
+      "description": "Model representing the provide references request for covered card application."
+    },
+    "ReferralDetailResponse": {
+      "type": "object",
+      "properties": {
+        "branch": {
+          "$ref": "#/definitions/BranchDetailsDTO"
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "DSU",
+            "CRO"
+          ]
+        }
+      },
+      "title": "ReferralDetailResponse"
+    },
+    "ResponseEntity": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object"
+        },
+        "statusCode": {
+          "type": "string",
+          "enum": [
+            "100 CONTINUE",
+            "101 SWITCHING_PROTOCOLS",
+            "102 PROCESSING",
+            "103 CHECKPOINT",
+            "200 OK",
+            "201 CREATED",
+            "202 ACCEPTED",
+            "203 NON_AUTHORITATIVE_INFORMATION",
+            "204 NO_CONTENT",
+            "205 RESET_CONTENT",
+            "206 PARTIAL_CONTENT",
+            "207 MULTI_STATUS",
+            "208 ALREADY_REPORTED",
+            "226 IM_USED",
+            "300 MULTIPLE_CHOICES",
+            "301 MOVED_PERMANENTLY",
+            "302 FOUND",
+            "302 MOVED_TEMPORARILY",
+            "303 SEE_OTHER",
+            "304 NOT_MODIFIED",
+            "305 USE_PROXY",
+            "307 TEMPORARY_REDIRECT",
+            "308 PERMANENT_REDIRECT",
+            "400 BAD_REQUEST",
+            "401 UNAUTHORIZED",
+            "402 PAYMENT_REQUIRED",
+            "403 FORBIDDEN",
+            "404 NOT_FOUND",
+            "405 METHOD_NOT_ALLOWED",
+            "406 NOT_ACCEPTABLE",
+            "407 PROXY_AUTHENTICATION_REQUIRED",
+            "408 REQUEST_TIMEOUT",
+            "409 CONFLICT",
+            "410 GONE",
+            "411 LENGTH_REQUIRED",
+            "412 PRECONDITION_FAILED",
+            "413 PAYLOAD_TOO_LARGE",
+            "413 REQUEST_ENTITY_TOO_LARGE",
+            "414 URI_TOO_LONG",
+            "414 REQUEST_URI_TOO_LONG",
+            "415 UNSUPPORTED_MEDIA_TYPE",
+            "416 REQUESTED_RANGE_NOT_SATISFIABLE",
+            "417 EXPECTATION_FAILED",
+            "418 I_AM_A_TEAPOT",
+            "419 INSUFFICIENT_SPACE_ON_RESOURCE",
+            "420 METHOD_FAILURE",
+            "421 DESTINATION_LOCKED",
+            "422 UNPROCESSABLE_ENTITY",
+            "423 LOCKED",
+            "424 FAILED_DEPENDENCY",
+            "426 UPGRADE_REQUIRED",
+            "428 PRECONDITION_REQUIRED",
+            "429 TOO_MANY_REQUESTS",
+            "431 REQUEST_HEADER_FIELDS_TOO_LARGE",
+            "451 UNAVAILABLE_FOR_LEGAL_REASONS",
+            "500 INTERNAL_SERVER_ERROR",
+            "501 NOT_IMPLEMENTED",
+            "502 BAD_GATEWAY",
+            "503 SERVICE_UNAVAILABLE",
+            "504 GATEWAY_TIMEOUT",
+            "505 HTTP_VERSION_NOT_SUPPORTED",
+            "506 VARIANT_ALSO_NEGOTIATES",
+            "507 INSUFFICIENT_STORAGE",
+            "508 LOOP_DETECTED",
+            "509 BANDWIDTH_LIMIT_EXCEEDED",
+            "510 NOT_EXTENDED",
+            "511 NETWORK_AUTHENTICATION_REQUIRED"
+          ]
+        },
+        "statusCodeValue": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "ResponseEntity"
+    },
+    "SingleProductResponse": {
+      "type": "object",
+      "properties": {
+        "eligibilityCheckResponse": {
+          "$ref": "#/definitions/EligibilityCheckResponse"
+        },
+        "product": {
+          "$ref": "#/definitions/Product"
+        }
+      },
+      "title": "SingleProductResponse"
+    },
+    "StepsDTO": {
+      "type": "object",
+      "properties": {
+        "applicationStatus": {
+          "description": "Status of respective Step in covered card application",
+          "$ref": "#/definitions/ApplicationStatusDTO"
+        },
+        "steps": {
+          "type": "array",
+          "description": "Create covered card application steps",
+          "items": {
+            "type": "string",
+            "enum": [
+              "NOT_APPLIED",
+              "UPDATE_IDENTITY_DOCUMENTS",
+              "CONFIRM_EMPLOYMENT_DETAILS",
+              "PROVIDE_REFERENCES",
+              "UPLOAD_INCOME_PROOF",
+              "VERIFY_FINANCIAL_INFORMATION",
+              "SIGN_SECURITY_CHEQUE_VIEW_MURABAHA",
+              "ACCEPT_CONTRACT"
+            ]
+          }
+        }
+      },
+      "title": "StepsDTO",
+      "description": "Model representing the Business Details for create covered card steps."
+    },
+    "UAEVisaDetails": {
+      "type": "object",
+      "properties": {
+        "documentNumber": {
+          "type": "string"
+        },
+        "expiryDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "fileNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "identityNumber": {
+          "type": "string"
+        },
+        "issuingCountry": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "passportNumber": {
+          "type": "string"
+        },
+        "profession": {
+          "type": "string"
+        },
+        "profilePicFileName": {
+          "type": "string"
+        },
+        "sponsor": {
+          "type": "string"
+        }
+      },
+      "title": "UAEVisaDetails"
+    },
+    "UpdateLimitDTO": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "example": true,
+          "description": "Account information for auto debit account",
+          "$ref": "#/definitions/AccountInformation"
+        },
+        "deviceId": {
+          "type": "string",
+          "example": "11"
+        },
+        "deviceIp": {
+          "type": "string",
+          "example": "10.20.20"
+        },
+        "deviceModel": {
+          "type": "string",
+          "example": "samsung"
+        },
+        "deviceOs": {
+          "type": "string",
+          "example": "SNAP"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "example": 50000,
+          "description": "Accepted limit by customer. Currency: AED"
+        },
+        "monthlyRepayment": {
+          "type": "integer",
+          "format": "int32",
+          "example": 5,
+          "description": "Auto debit percentage"
+        },
+        "takaful": {
+          "type": "boolean",
+          "example": false,
+          "description": "Opted for takaful"
+        }
+      },
+      "title": "UpdateLimitDTO",
+      "description": "Request model for update application limit."
+    },
+    "UserPreferences": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "iconUrl": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "title": "UserPreferences"
+    },
+    "ValidateOTPRequest": {
+      "type": "object",
+      "properties": {
+        "deviceId": {
+          "type": "string",
+          "example": "11"
+        },
+        "deviceIp": {
+          "type": "string",
+          "example": "10.20.20"
+        },
+        "deviceModel": {
+          "type": "string",
+          "example": "samsung"
+        },
+        "deviceOs": {
+          "type": "string",
+          "example": "SNAP"
+        },
+        "operation": {
+          "type": "string",
+          "description": "Operation for which OTP validation is used",
+          "enum": [
+            "CVC_CREDIT_CHECK",
+            "CVC_FINANCE_CONTRACTS_ACCEPT"
+          ]
+        },
+        "otp": {
+          "type": "string",
+          "description": "Reference Number for OTP validation"
+        },
+        "referenceNumber": {
+          "type": "string",
+          "description": "Reference Number for OTP validation"
+        }
+      },
+      "title": "ValidateOTPRequest"
+    }
+  }
+}
