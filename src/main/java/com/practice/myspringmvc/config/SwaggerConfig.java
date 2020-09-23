@@ -35,7 +35,7 @@ public class SwaggerConfig {
                 .build();
     }
 
-   /* @Bean
+    @Bean
     public Docket productsApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
@@ -43,5 +43,5 @@ public class SwaggerConfig {
                 .select()
                 .paths(PathSelectors.regex("/api.*"))
                 .build();
-    }*/
+    }
 }
