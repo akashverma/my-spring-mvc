@@ -20,5 +20,5 @@ public class YAMLConfig {
     private String name;
     private String environment;
     private List<String> servers;
-
+    private String baseUrl;
 }

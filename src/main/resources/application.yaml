@@ -7,6 +7,7 @@ servers:
   - www.xyz.test.com
 profiles:
   active: test
+base-url: "https://jsonmock.hackerrank.com/api/football_matches"
 
 #The 3 dashes below separate individual profiles. So that we can contain multiple profiles (test, prod) in single yml file
 ---
@@ -17,3 +18,5 @@ environment: production
 servers:
   - www.abc.com
   - www.xyz.com
+
+
