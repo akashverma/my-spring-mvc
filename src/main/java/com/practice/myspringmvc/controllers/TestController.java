@@ -1,8 +1,10 @@
 package com.practice.myspringmvc.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.practice.myspringmvc.dtos.Car2;
 import com.practice.myspringmvc.dtos.Person;
 import com.practice.myspringmvc.dtos.Person2;
+import com.practice.myspringmvc.dtos.ResponseTransfer;
 import com.practice.myspringmvc.services.impl.ObjectMapperDemo;
 import com.practice.myspringmvc.services.impl.TestRestCallImpl;
 import com.practice.myspringmvc.validator.TestControllerValidator1;
@@ -16,14 +18,17 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.net.URISyntaxException;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * Random generic controller to play with
+ * {@link TestController}
  */
 @RestController
 public class TestController {
@@ -76,5 +81,29 @@ public class TestController {
     @GetMapping( value = "/test/object/mapper" )
     public void testObjectMapper() throws JsonProcessingException {
         objectMapperDemo.foo();
+    }
+
+    /**
+     * method to demo usage of {@link ResponseBody}
+     */
+    @PostMapping( value = "/testPost/v2", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE )
+    @ResponseBody
+    public ResponseTransfer testPost(@RequestBody Car2 car2) {
+        ResponseTransfer response = new ResponseTransfer();
+        response.setColor(car2.getColor());
+        response.setType(car2.getType());
+        return response;
+    }
+
+    /**
+     * method to demo usage of {@link ResponseBody}
+     */
+    @GetMapping( value = "/testGet/v2", produces = APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseTransfer testGet() {
+        ResponseTransfer response = new ResponseTransfer();
+        response.setColor("hardcoded color");
+        response.setType("hardcoded type");
+        return response;
     }
 }
